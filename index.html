@@ -36,6 +36,10 @@
   .node b { display:block; }
   .ok { color:var(--green); } .wait { color:var(--amber); } .bad { color:var(--red); }
   button.go { background:var(--navy); color:white; border:0; padding:8px 10px; cursor:pointer; margin-top:8px; }
+  .asks { display:grid; gap:8px; margin:12px 0 14px; }
+  .asks button { text-align:left; background:white; border:1px solid var(--line); padding:10px 12px; cursor:pointer; }
+  .asks button.on { border-color:var(--navy); box-shadow:inset 3px 0 0 var(--navy); }
+  .answer { font-size:22px; font-weight:650; letter-spacing:-.02em; margin:6px 0 8px; }
   button.link { background:transparent; color:var(--navy); border:0; padding:0; cursor:pointer; text-decoration:underline; }
   .note { color:#5c6775; font-size:13px; }
   @media (max-width:800px) { .shell { grid-template-columns:1fr; } .kpis { grid-template-columns:1fr 1fr; } }
@@ -61,6 +65,7 @@ const DATA = {"price": 82.32, "factor": {"2026": 0.975, "2027": 0.95, "2028": 0.
 const state = {
   page: "decision",
   year: 2026,
+  question: 0,
   line: DATA.lines[0].id,
   verified: new Set(DATA.lines.flatMap(line => line.slices.filter(item => item.initial === "verified").map(item => item.id)))
 };
@@ -123,25 +128,50 @@ function draw() {
   const full = book("full");
   const main = document.getElementById("main");
   if (state.page === "decision") {
-    const top = DATA.lines.map(line => ({ line, pos: position(line) })).sort((a, b) => b.pos.score - a.pos.score || b.line.tonnes - a.line.tonnes)[0];
+    const ranked = DATA.lines.map(line => ({ line, pos: position(line) })).sort((a, b) => b.pos.score - a.pos.score || b.line.tonnes - a.line.tonnes);
+    const top = ranked[0];
     const act = actions().find(item => item.line.id === top.line.id);
+    const safe = DATA.lines.filter(line => position(line).price === "Firm" && position(line).delivery === "Held");
+    const missing = top.line.slices.filter(item => !state.verified.has(item.id));
+    const questions = [
+      "Which customer do we not confirm this week?",
+      "Why is that promise still open?",
+      "What do we do, and how much comes off?",
+      "Which account is already safe to confirm?"
+    ];
+    const answers = [
+      top.pos.score <= 2
+        ? "Confirm the book. Every customer promise on this page has a held date and a firm price."
+        : `Do not confirm ${top.line.customer} (${top.line.id}). The date is ${top.pos.delivery}. The price is ${top.pos.price}. Risk ${top.pos.score}, ${top.pos.band}.`,
+      missing.length
+        ? `${top.line.customer} was promised: ${top.line.promise}. Still missing: ${missing.map(item => item.name).join("; ")}. ${top.pos.complaint}`
+        : `${top.line.customer} has no missing installation.`,
+      act
+        ? `${act.verb}: ${act.name}. That removes ${euro(act.euros)} of mark-up on ${top.line.id}. Owner: the CX PMO analyst. The certificate on the verified figure is still paid.`
+        : "Nothing to remove. The remaining certificate is the verified figure.",
+      safe.length
+        ? safe.map(line => `${line.id} ${line.customer}: date held, price firm, certificate ${euro(cost(intensity(line), line))}.`).join(" ")
+        : "None. Every account still has an open date or an open price."
+    ];
     main.innerHTML = `
-      <h2>Decision for the customer-experience review</h2>
-      <p class="lead">One page for leadership. The customer was promised a date and a price. In 2026 the price can break when an imported good — steel, fertiliser, aluminium, cement or hydrogen — still has an unverified installation behind it. The certificate is paid either way. The mark-up is what turns the quote into an order change.</p>
-      <div class="kpis">
-        <div class="kpi"><span>Promises with an open price</span><b>${openPrice} of ${DATA.lines.length}</b></div>
-        <div class="kpi"><span>Promises with an open date</span><b>${openDate} of ${DATA.lines.length}</b></div>
-        <div class="kpi"><span>Mark-up still in the book</span><b>${euro(today - full)}</b></div>
-        <div class="kpi"><span>Chain today</span><b>${euro(today)}</b></div>
+      <h2>Ask the desk</h2>
+      <p class="lead">These are the questions in the customer-experience review. Press one. The answer is read off this book, and it changes when you record an installation as verified.</p>
+      <div class="asks">
+        ${questions.map((text, index) => `<button data-q="${index}" class="${index === state.question ? "on" : ""}">${text}</button>`).join("")}
       </div>
-      <p class="note">Open price is an order change (Auftragsänderung). Open date is the delivery promise (Liefertreue). A surcharge after the order is the complaint (Reklamation). Risk score is probability × impact.</p>
       <div class="card high">
-        <b>Workshop decision · ${top.line.id} · risk ${top.pos.score} ${top.pos.band}</b>
-        <p>${top.line.customer}. ${top.line.promise}. ${top.pos.complaint}</p>
-        <p>${act ? "On this account, " + act.verb.toLowerCase() + ": " + act.name + ". That removes " + euro(act.euros) + " of mark-up. Owner: the CX PMO analyst. Do not confirm this customer's price until that installation is verified." : "Every installation on this account is verified. Confirm the price."}</p>
-        ${act ? `<button class="go" id="do-top">Record ${act.name} as verified</button>` : ""}
+        <span class="note">Answer</span>
+        <p class="answer">${answers[state.question]}</p>
+        ${state.question !== 3 && act ? `<button class="go" id="do-top">Record ${act.name} as verified</button>` : ""}
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span>Open price · order change</span><b>${openPrice} of ${DATA.lines.length}</b></div>
+        <div class="kpi"><span>Open date · delivery</span><b>${openDate} of ${DATA.lines.length}</b></div>
+        <div class="kpi"><span>Mark-up still in the book</span><b>${euro(today - full)}</b></div>
+        <div class="kpi"><span>Certificate on today's evidence</span><b>${euro(today)}</b></div>
       </div>
       ${table()}`;
+    main.querySelectorAll(".asks button").forEach(button => button.onclick = () => { state.question = Number(button.dataset.q); draw(); });
     const go = document.getElementById("do-top");
     if (go && act) go.onclick = () => { state.verified.add(act.id); draw(); };
   } else if (state.page === "customers") {
