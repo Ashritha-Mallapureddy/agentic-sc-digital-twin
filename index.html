@@ -3,66 +3,216 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Agentic supply chain digital twin · Ashritha Mallapureddy</title>
+<title>Agentic CX desk · Ashritha Mallapureddy</title>
 <style>
-  body { margin: 0; background: #f3f2f1; color: #252423; font-family: "Segoe UI", sans-serif; line-height: 1.5; }
-  header, main { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
-  h1 { margin: 0 0 8px; font-weight: 650; letter-spacing: -0.03em; }
-  .note, .decision, table { background: white; }
-  .note, .decision { padding: 14px 16px; margin: 12px 0; }
-  .decision { border-left: 4px solid #12239E; }
-  table { border-collapse: collapse; width: 100%; font-size: 14px; }
-  th, td { text-align: right; padding: 8px 10px; border-bottom: 1px solid #edebe9; }
-  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
-  th { color: #605e5c; font-weight: 600; }
-  a { color: #12239E; }
-  .meta { color: #605e5c; }
+  :root { --ink:#1c2430; --navy:#0e1c2f; --line:#e3e8ef; --paper:#f4f6f8; --green:#0f7b4c; --amber:#9a6700; --red:#9f1239; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Segoe UI", sans-serif; line-height:1.45; }
+  .shell { display:grid; grid-template-columns: 250px 1fr; min-height:100vh; }
+  nav { background:var(--navy); color:#e7edf5; padding:22px 18px; }
+  nav h1 { font-size:18px; margin:0 0 4px; font-weight:650; }
+  nav p { color:#b7c3d4; font-size:13px; margin:0 0 16px; }
+  nav label { display:block; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#b7c3d4; margin:14px 0 6px; }
+  select, button { font:inherit; }
+  select { width:100%; background:#16324f; color:white; border:1px solid #2a4a6d; padding:8px; }
+  nav button { display:block; width:100%; text-align:left; background:transparent; color:#e7edf5; border:0; padding:10px 8px; margin-top:4px; cursor:pointer; }
+  nav button.on { background:#16324f; }
+  main { padding:28px 32px 48px; max-width:1080px; }
+  h2 { margin:0 0 8px; font-weight:650; letter-spacing:-.02em; }
+  .lead { margin:0 0 16px; max-width:760px; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0; }
+  .kpi, .card, table { background:white; }
+  .kpi { border-top:3px solid var(--navy); padding:12px 14px; }
+  .kpi span { display:block; color:#5c6775; font-size:12px; }
+  .kpi b { font-size:26px; font-weight:650; }
+  .card { border:1px solid var(--line); padding:14px 16px; margin:12px 0; }
+  .card.high { border-left:4px solid var(--red); }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:#5c6775; font-weight:600; }
+  .tiers { display:grid; gap:10px; }
+  .row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+  .node { background:white; border:1px solid var(--line); padding:12px; }
+  .node b { display:block; }
+  .ok { color:var(--green); } .wait { color:var(--amber); } .bad { color:var(--red); }
+  button.go { background:var(--navy); color:white; border:0; padding:8px 10px; cursor:pointer; margin-top:8px; }
+  button.link { background:transparent; color:var(--navy); border:0; padding:0; cursor:pointer; text-decoration:underline; }
+  .note { color:#5c6775; font-size:13px; }
+  @media (max-width:800px) { .shell { grid-template-columns:1fr; } .kpis { grid-template-columns:1fr 1fr; } }
 </style>
 </head>
 <body>
-<header>
-  <p class="meta">SRH University · 2026 · Ashritha Mallapureddy</p>
-  <h1>Decision memo · agentic twin</h1>
-  <p class="note">RheinAdhesives network, synthetic. Sixteen weeks. Supplier resin, supplier packaging, Cologne plant, Duisburg DC, customers in DE, FR, NL, and PL. This memo is the orchestrator's output. It is not a forecast of a real company and it does not use employer data.</p>
-</header>
-<main>
-  <div class="decision">
-    <b>Recommendation</b>
-    <p>On the undisturbed network, low-carbon mode finishes at fill rate 98.8% and 1817 CO₂ units, against service mode at 100.0% and 3415. Rail share is 100% in low-carbon mode and 0% in service mode.</p>
-    <p>A four-week resin shortage is not a mode problem. Balanced mode ends at fill rate 82.2% with backlog 1391. Service mode, which may expedite, ends at 89.7% with backlog 808. Expediting moves finished goods that already exist. It does not create resin.</p>
-    <p>Keep the low-carbon lane while backlog is only the rail delay itself. When a resin constraint is open, switch the mode to service: the truck lane and the plant buffer recover units that already exist. Switch back once the constraint has passed. Do not leave the premium lane on as a habit.</p>
-  </div>
-  <table>
-    <thead>
-      <tr><th>Scenario</th><th>Mode</th><th>Fill rate</th><th>Ending backlog</th><th>Cost</th><th>CO₂</th><th>Rail share</th><th>Expedite qty</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>baseline</td><td>service</td><td>100.0%</td><td>0</td><td>39034</td><td>3415</td><td>0%</td><td>147</td></tr>
-      <tr><td>baseline</td><td>balanced</td><td>98.9%</td><td>87</td><td>38678</td><td>3180</td><td>18%</td><td>0</td></tr>
-      <tr><td>baseline</td><td>low_carbon</td><td>98.8%</td><td>92</td><td>35787</td><td>1817</td><td>100%</td><td>0</td></tr>
-      <tr><td>resin_short</td><td>service</td><td>89.7%</td><td>808</td><td>34358</td><td>3081</td><td>0%</td><td>627</td></tr>
-      <tr><td>resin_short</td><td>balanced</td><td>82.2%</td><td>1391</td><td>32071</td><td>2619</td><td>21%</td><td>0</td></tr>
-      <tr><td>resin_short</td><td>low_carbon</td><td>81.1%</td><td>1482</td><td>29526</td><td>1497</td><td>100%</td><td>0</td></tr>
-      <tr><td>port_delay</td><td>service</td><td>94.0%</td><td>467</td><td>36802</td><td>3302</td><td>0%</td><td>867</td></tr>
-      <tr><td>port_delay</td><td>balanced</td><td>87.7%</td><td>959</td><td>33756</td><td>2829</td><td>16%</td><td>0</td></tr>
-      <tr><td>port_delay</td><td>low_carbon</td><td>85.9%</td><td>1102</td><td>31103</td><td>1578</td><td>100%</td><td>0</td></tr>
-      <tr><td>demand_spike</td><td>service</td><td>100.0%</td><td>0</td><td>41806</td><td>3677</td><td>0%</td><td>329</td></tr>
-      <tr><td>demand_spike</td><td>balanced</td><td>98.3%</td><td>140</td><td>40476</td><td>3324</td><td>17%</td><td>0</td></tr>
-      <tr><td>demand_spike</td><td>low_carbon</td><td>97.6%</td><td>199</td><td>37541</td><td>1906</td><td>100%</td><td>0</td></tr>
-    </tbody>
-  </table>
-  <div class="note">
-    <b>What each agent is allowed to do</b>
-    <ul>
-      <li>Inventory releases production, the Duisburg shuttle, and replenishment. Resin cover is lead time plus one week, capped by what the supplier will release.</li>
-      <li>Outbound stock is split in proportion to each region's backlog plus forecast.</li>
-      <li>Service mode sends that share by truck and may expedite up to 80 kits from the plant buffer.</li>
-      <li>Balanced mode uses rail only for a region whose backlog is already cleared. Low-carbon mode uses rail for every share.</li>
-      <li>Disruption changes resin capacity or resin lead time for the weeks of the scenario.</li>
-    </ul>
-    <p>CO₂ and cost units are model units, comparable inside this twin and not convertible to a published corporate footprint.</p>
-    <p>The same text is in <a href="output/decision_memo.md">output/decision_memo.md</a>. The weekly model is <a href="https://github.com/Ashritha-Mallapureddy/agentic-sc-digital-twin">in the repository</a>. Run <code>python -m streamlit run app.py</code> for the interactive view.</p>
-  </div>
-</main>
+<div class="shell">
+  <nav>
+    <h1>Agentic CX desk</h1>
+    <p>Linea Automotive GmbH · Düsseldorf · sample, not a filing and not an employer system</p>
+    <label>Declaration year</label>
+    <select id="year"></select>
+    <label>Review</label>
+    <button id="nav-decision" class="on">Decision</button>
+    <button id="nav-customers">Customer promises</button>
+    <button id="nav-chain">Supplier chain</button>
+    <button id="nav-agents">Agents</button>
+  </nav>
+  <main id="main"></main>
+</div>
+<script>
+const DATA = {"price": 82.32, "factor": {"2026": 0.975, "2027": 0.95, "2028": 0.9, "2029": 0.775, "2030": 0.515}, "markup": {"2026": 0.1, "2027": 0.2, "2028": 0.3, "2029": 0.3, "2030": 0.3}, "fert": 0.01, "lines": [{"id": "L-01", "good": "Hot-rolled coil", "cn": "7208 39 00", "sector": "Iron and steel", "origin": "India", "customer": "German body-panel account", "promise": "Coil in the quoted week, at the quoted price", "tonnes": 1800, "benchmark": 1.37, "country_default": 4.28, "default_note": "Public calculators list 4.28 tCO2e/t for India, CN 7208 39 00, before the 2026 mark-up. A declaration uses the Commission Excel.", "benchmark_note": "", "slices": [{"id": "L01-mill", "tier": 1, "role": "Mill", "name": "Deccan Flat Products", "place": "Jamshedpur, sample mill", "actual": 0.85, "default_2026": 1.4, "initial": "verified"}, {"id": "L01-iron", "tier": 2, "role": "Precursor", "name": "Hot metal, same works", "place": "Jamshedpur", "actual": 0.78, "default_2026": 1.35, "initial": "verified"}, {"id": "L01-coke", "tier": 2, "role": "Precursor", "name": "East Gate Coke", "place": "Jharkhand, sample plant", "actual": 0.32, "default_2026": 0.55, "initial": "verified"}, {"id": "L01-ore", "tier": 3, "role": "Extraction", "name": "Singhbhum iron fines", "place": "Odisha, named, no verifier report", "actual": 0.22, "default_2026": 0.48, "initial": "unverified"}, {"id": "L01-coal", "tier": 3, "role": "Extraction", "name": "Coking coal, installation not on the invoice", "place": "Bought through Harbour Bulk, Singapore", "actual": 0.35, "default_2026": 0.928, "initial": "unknown"}]}, {"id": "L-02", "good": "Steel slab", "cn": "7207 12 10", "sector": "Iron and steel", "origin": "China", "customer": "Appliance housing account", "promise": "Slab available for the production slot already confirmed", "tonnes": 900, "benchmark": 1.364, "country_default": 3.169, "default_note": "Published country default for China, CN 7207 12 10: 3.169 tCO2e/t before mark-up. BF-BOF benchmark 1.364.", "benchmark_note": "", "slices": [{"id": "L02-mill", "tier": 1, "role": "Mill", "name": "Hebei Heat Metals", "place": "Hebei, sample mill, sheet not verified", "actual": 0.72, "default_2026": 1.2, "initial": "unverified"}, {"id": "L02-iron", "tier": 2, "role": "Precursor", "name": "Blast-furnace hot metal", "place": "Same site, unverified", "actual": 0.64, "default_2026": 1.1, "initial": "unverified"}, {"id": "L02-coke", "tier": 2, "role": "Precursor", "name": "Coke battery", "place": "Same site, unverified", "actual": 0.25, "default_2026": 0.45, "initial": "unverified"}, {"id": "L02-coal", "tier": 3, "role": "Extraction", "name": "Coking coal mine", "place": "Not named by the mill", "actual": 0.3, "default_2026": 0.7359, "initial": "unknown"}]}, {"id": "L-03", "good": "Wire rod", "cn": "7213 10 00", "sector": "Iron and steel", "origin": "Origin not established", "customer": "Spot buyer", "promise": "No date and no price can be confirmed", "tonnes": 320, "benchmark": 1.37, "country_default": 4.049, "default_note": "No country table can be chosen. The desk uses the published 'other countries and territories' figure for this kind of hot-rolled product, 4.049 tCO2e/t before mark-up.", "benchmark_note": "", "slices": [{"id": "L03-mill", "tier": 1, "role": "Mill", "name": "Mill not named", "place": "Trader bill of lading only", "actual": 0.9, "default_2026": 1.8, "initial": "unknown"}, {"id": "L03-iron", "tier": 2, "role": "Precursor", "name": "Hot metal", "place": "Installation unknown", "actual": 0.7, "default_2026": 1.4, "initial": "unknown"}, {"id": "L03-coke", "tier": 2, "role": "Precursor", "name": "Coke", "place": "Installation unknown", "actual": 0.28, "default_2026": 0.55, "initial": "unknown"}, {"id": "L03-coal", "tier": 3, "role": "Extraction", "name": "Coking coal", "place": "Installation unknown", "actual": 0.32, "default_2026": 0.7039, "initial": "unknown"}]}, {"id": "L-04", "good": "Urea", "cn": "3102 10 19", "sector": "Fertilisers", "origin": "Egypt", "customer": "Blending account", "promise": "Urea at the quoted contribution margin", "tonnes": 600, "benchmark": 0.0, "country_default": 1.39, "default_note": "Published example for Egypt, CN 3102 10 19: 1.390 tCO2e/t before the 1% fertiliser mark-up. The legal functional unit is kilograms of nitrogen.", "benchmark_note": "No benchmark is deducted on this sample line. The fertiliser functional unit is kilograms of nitrogen, and this desk does not invent that benchmark.", "slices": [{"id": "L04-plant", "tier": 1, "role": "Plant", "name": "Nile Nutrient Chemicals", "place": "Sample ammonia-urea plant, sheet not verified", "actual": 0.62, "default_2026": 0.95, "initial": "unverified"}, {"id": "L04-gas", "tier": 3, "role": "Extraction", "name": "Natural gas field", "place": "Not named behind the ammonia", "actual": 0.22, "default_2026": 0.4539, "initial": "unknown"}]}, {"id": "L-05", "good": "Unwrought aluminium", "cn": "7601", "sector": "Aluminium", "origin": "United Arab Emirates", "customer": "Adhesive cartridge account", "promise": "Aluminium for the pack the customer receives, at the quoted price", "tonnes": 120, "benchmark": 0.0, "country_default": 1.87, "default_note": "Published example for the UAE and Bahrain, CN 7601: 1.870 tCO2e/t before mark-up. Aluminium is priced on direct emissions, including PFCs.", "benchmark_note": "No aluminium benchmark is deducted here. The sample keeps the comparison to the marked default.", "slices": [{"id": "L05-smelt", "tier": 1, "role": "Smelter", "name": "Gulf Primary Aluminium", "place": "Sample smelter, unverified", "actual": 1.05, "default_2026": 1.4, "initial": "unverified"}, {"id": "L05-alumina", "tier": 2, "role": "Precursor", "name": "Alumina refinery", "place": "Named, no verifier report", "actual": 0.28, "default_2026": 0.4, "initial": "unverified"}, {"id": "L05-bauxite", "tier": 3, "role": "Extraction", "name": "Bauxite mine", "place": "Not named", "actual": 0.12, "default_2026": 0.257, "initial": "unknown"}]}, {"id": "L-06", "good": "Grey Portland cement", "cn": "2523 29 00", "sector": "Cement", "origin": "T\u00fcrkiye", "customer": "Site-works account", "promise": "Cement for the scheduled pour, at the quoted price", "tonnes": 250, "benchmark": 0.666, "country_default": 1.44, "default_note": "Published 'other countries and territories' value used for this CN code, 1.440 tCO2e/t before mark-up. Benchmark cited for this cement: 0.666.", "benchmark_note": "", "slices": [{"id": "L06-kiln", "tier": 1, "role": "Kiln", "name": "Anatolian Grey Kiln", "place": "Sample kiln, unverified", "actual": 0.72, "default_2026": 1.1, "initial": "unverified"}, {"id": "L06-clinker", "tier": 2, "role": "Precursor", "name": "Clinker, same site", "place": "Unverified", "actual": 0.18, "default_2026": 0.3, "initial": "unverified"}, {"id": "L06-quarry", "tier": 3, "role": "Extraction", "name": "Limestone quarry", "place": "Named with the kiln", "actual": 0.08, "default_2026": 0.184, "initial": "verified"}]}, {"id": "L-07", "good": "Hydrogen", "cn": "2804 10 00", "sector": "Hydrogen", "origin": "No country table", "customer": "Process-heat account", "promise": "Hydrogen for the booked process window, at the quoted price", "tonnes": 5, "benchmark": 0.0, "country_default": 17.74, "default_note": "Published 'other countries and territories' value, CN 2804 10 00: 17.740 tCO2e/t before mark-up.", "benchmark_note": "No hydrogen benchmark is deducted in this sample.", "slices": [{"id": "L07-smr", "tier": 1, "role": "Plant", "name": "Atlas Gas Chemicals", "place": "Sample reformer, unverified", "actual": 9.0, "default_2026": 12.0, "initial": "unverified"}, {"id": "L07-gas", "tier": 3, "role": "Extraction", "name": "Natural gas field", "place": "Not named", "actual": 2.5, "default_2026": 7.514, "initial": "unknown"}]}]};
+const state = {
+  page: "decision",
+  year: 2026,
+  line: DATA.lines[0].id,
+  verified: new Set(DATA.lines.flatMap(line => line.slices.filter(item => item.initial === "verified").map(item => item.id)))
+};
+const euro = value => "€" + Math.round(value).toLocaleString("en-IE");
+const markup = (sector, year) => sector === "Fertilisers" ? DATA.fert : DATA.markup[year];
+const sliceValue = (item, line) => {
+  if (state.verified.has(item.id)) return item.actual;
+  return item.default_2026 * (1 + markup(line.sector, state.year)) / (1 + markup(line.sector, 2026));
+};
+const intensity = line => line.slices.reduce((sum, item) => sum + sliceValue(item, line), 0);
+const marked = line => line.country_default * (1 + markup(line.sector, state.year));
+const cost = (embedded, line) => Math.max(0, embedded - DATA.factor[state.year] * line.benchmark) * line.tonnes * DATA.price;
+const fullSet = line => new Set(line.slices.map(item => item.id));
+const costMode = (line, mode) => {
+  const was = state.verified;
+  if (mode === "full") state.verified = fullSet(line);
+  const embedded = mode === "default" ? marked(line) : intensity(line);
+  const value = cost(embedded, line);
+  state.verified = was;
+  return value;
+};
+function position(line) {
+  const open = line.slices.filter(item => !state.verified.has(item.id));
+  const dateOpen = open.some(item => item.tier === 1);
+  const priceOpen = open.length > 0;
+  let probability, impact, complaint;
+  if (!priceOpen) { probability = 1; impact = 2; complaint = "No open complaint. The quoted price can stand."; }
+  else if (dateOpen && open.some(item => item.initial === "unknown")) { probability = 4; impact = 5; complaint = "The customer cannot be given a firm date or a firm price."; }
+  else if (line.tonnes >= 500) { probability = 3; impact = 5; complaint = "A certificate surcharge would change the order after the promise."; }
+  else { probability = 3; impact = 3; complaint = "The price stays open until the missing installation is verified."; }
+  const score = probability * impact;
+  return { delivery: dateOpen ? "Open" : "Held", price: priceOpen ? "Open" : "Firm", complaint, score, band: score >= 15 ? "High" : score >= 8 ? "Medium" : "Low" };
+}
+function actions() {
+  const rows = [];
+  for (const line of DATA.lines) {
+    for (const item of line.slices) {
+      if (state.verified.has(item.id)) continue;
+      const before = cost(intensity(line), line);
+      state.verified.add(item.id);
+      const after = cost(intensity(line), line);
+      state.verified.delete(item.id);
+      const euros = before - after;
+      if (euros <= 1) continue;
+      rows.push({ ...item, line, euros, verb: item.initial === "unknown" ? "Name the installation and verify it" : "Obtain the verifier's report" });
+    }
+  }
+  rows.sort((a, b) => b.euros - a.euros);
+  return rows;
+}
+function book(mode) {
+  return DATA.lines.reduce((sum, line) => sum + costMode(line, mode), 0);
+}
+const findLine = id => DATA.lines.find(line => line.id === id);
+function draw() {
+  document.querySelectorAll("nav button").forEach(button => button.classList.toggle("on", button.id === "nav-" + state.page));
+  const openPrice = DATA.lines.filter(line => position(line).price === "Open").length;
+  const openDate = DATA.lines.filter(line => position(line).delivery === "Open").length;
+  const today = book("today");
+  const full = book("full");
+  const main = document.getElementById("main");
+  if (state.page === "decision") {
+    const top = DATA.lines.map(line => ({ line, pos: position(line) })).sort((a, b) => b.pos.score - a.pos.score || b.line.tonnes - a.line.tonnes)[0];
+    const act = actions().find(item => item.line.id === top.line.id);
+    main.innerHTML = `
+      <h2>Decision for the customer-experience review</h2>
+      <p class="lead">One page for leadership. The customer was promised a date and a price. In 2026 the price can break when an imported good — steel, fertiliser, aluminium, cement or hydrogen — still has an unverified installation behind it. The certificate is paid either way. The mark-up is what turns the quote into an order change.</p>
+      <div class="kpis">
+        <div class="kpi"><span>Promises with an open price</span><b>${openPrice} of ${DATA.lines.length}</b></div>
+        <div class="kpi"><span>Promises with an open date</span><b>${openDate} of ${DATA.lines.length}</b></div>
+        <div class="kpi"><span>Mark-up still in the book</span><b>${euro(today - full)}</b></div>
+        <div class="kpi"><span>Chain today</span><b>${euro(today)}</b></div>
+      </div>
+      <p class="note">Open price is an order change (Auftragsänderung). Open date is the delivery promise (Liefertreue). A surcharge after the order is the complaint (Reklamation). Risk score is probability × impact.</p>
+      <div class="card high">
+        <b>Workshop decision · ${top.line.id} · risk ${top.pos.score} ${top.pos.band}</b>
+        <p>${top.line.customer}. ${top.line.promise}. ${top.pos.complaint}</p>
+        <p>${act ? "On this account, " + act.verb.toLowerCase() + ": " + act.name + ". That removes " + euro(act.euros) + " of mark-up. Owner: the CX PMO analyst. Do not confirm this customer's price until that installation is verified." : "Every installation on this account is verified. Confirm the price."}</p>
+        ${act ? `<button class="go" id="do-top">Record ${act.name} as verified</button>` : ""}
+      </div>
+      ${table()}`;
+    const go = document.getElementById("do-top");
+    if (go && act) go.onclick = () => { state.verified.add(act.id); draw(); };
+  } else if (state.page === "customers") {
+    main.innerHTML = `<h2>Customer promises</h2><p class="lead">Each customs line is a promise. Held means the plant on the invoice is verified, so the date can stand. Firm means every installation behind it is verified, so the quoted price can stand.</p>${table()}`;
+  } else if (state.page === "chain") {
+    const line = findLine(state.line);
+    const pos = position(line);
+    const options = DATA.lines.map(item => `<option value="${item.id}" ${item.id === line.id ? "selected" : ""}>${item.id} · ${item.good} · ${item.customer}</option>`).join("");
+    const tiers = [1, 2, 3].map(tier => {
+      const group = line.slices.filter(item => item.tier === tier);
+      if (!group.length) return "";
+      const title = tier === 1 ? "Tier 1 · the plant on the invoice" : tier === 2 ? "Tier 2 · precursors" : "Tier 3 · extraction the importer does not contract";
+      const cards = group.map(item => {
+        const known = state.verified.has(item.id);
+        const klass = known ? "ok" : item.initial === "unknown" ? "bad" : "wait";
+        const label = known ? "Verified actual" : item.initial === "unknown" ? "Installation unknown" : "Named, not verified";
+        const button = known ? "" : `<button class="go" data-id="${item.id}">${item.initial === "unknown" ? "Name it and use the actual" : "Attach the verifier report"}</button>`;
+        return `<div class="node"><span class="note">${item.role}</span><b>${item.name}</b><span class="note">${item.place}</span><div>${sliceValue(item, line).toFixed(3)} tCO2e/t</div><div class="${klass}">${label}</div>${button}</div>`;
+      }).join("");
+      return `<h3>${title}</h3><div class="row">${cards}</div>`;
+    }).join("");
+    main.innerHTML = `
+      <h2>Supplier chain</h2>
+      <p class="lead">The invoice names tier 1. The certificate also depends on the coke, the coal, the ore or the gas behind that plant. Until that installation is verified, its slice stays on the marked country default.</p>
+      <label>Line</label><select id="line">${options}</select>
+      <div class="kpis">
+        <div class="kpi"><span>Delivery promise</span><b>${pos.delivery}</b></div>
+        <div class="kpi"><span>Price promise</span><b>${pos.price}</b></div>
+        <div class="kpi"><span>Embedded emissions used</span><b>${intensity(line).toFixed(2)}</b></div>
+        <div class="kpi"><span>Certificate today</span><b>${euro(cost(intensity(line), line))}</b></div>
+      </div>
+      <p class="note">${line.default_note} ${line.benchmark_note || ""}</p>
+      <div class="tiers">${tiers}</div>`;
+    document.getElementById("line").onchange = event => { state.line = event.target.value; draw(); };
+    main.querySelectorAll("button[data-id]").forEach(button => button.onclick = () => { state.verified.add(button.dataset.id); draw(); });
+  } else {
+    const rows = actions();
+    const unnamed = DATA.lines.flatMap(line => line.slices).filter(item => item.initial === "unknown" && !state.verified.has(item.id)).length;
+    const list = rows.map(row => `<div class="card"><b>${row.verb}</b><div>${row.line.id} ${row.line.good} · ${row.line.customer}</div><div class="note">${row.name} · ${row.place} · tier ${row.tier}</div><div>Removes ${euro(row.euros)} · ${position(row.line).complaint}</div><button class="go" data-id="${row.id}">Record it as verified</button></div>`).join("");
+    main.innerHTML = `
+      <h2>Agents</h2>
+      <p class="lead">Four agents read the same book. They do not remove a certificate the verified figure still requires. They remove the mark-up that exists only because an installation is missing, and they say which customer promise that mark-up is holding open.</p>
+      <div class="kpis">
+        <div class="kpi"><span>Customs reader</span><b>${DATA.lines.length} lines</b></div>
+        <div class="kpi"><span>Chain scout</span><b>${unnamed} unnamed</b></div>
+        <div class="kpi"><span>Emissions clerk</span><b>${euro(today)}</b></div>
+        <div class="kpi"><span>Certificate desk</span><b>${rows.length} actions</b></div>
+      </div>
+      ${list || `<div class="card"><b>The book is verified.</b><p>The remaining certificate is the actual embedded emissions.</p></div>`}
+      <button class="go" id="reset">Reset to the evidence the book started with</button>`;
+    main.querySelectorAll("button[data-id]").forEach(button => button.onclick = () => { state.verified.add(button.dataset.id); draw(); });
+    document.getElementById("reset").onclick = () => {
+      state.verified = new Set(DATA.lines.flatMap(line => line.slices.filter(item => item.initial === "verified").map(item => item.id)));
+      draw();
+    };
+  }
+  main.querySelectorAll("button.link").forEach(button => button.onclick = () => { state.page = "chain"; state.line = button.dataset.line; draw(); });
+}
+function table() {
+  const body = DATA.lines.map(line => {
+    const pos = position(line);
+    return `<tr><td>${line.id}<br><span class="note">${line.good} · ${line.cn}</span></td><td>${line.customer}<br><span class="note">${line.promise}</span></td><td>${pos.delivery}</td><td>${pos.price}</td><td>${pos.band} ${pos.score}</td><td>${euro(cost(intensity(line), line))}</td><td><button class="link" data-line="${line.id}">Chain</button></td></tr>`;
+  }).join("");
+  return `<table><thead><tr><th>Line</th><th>Customer promise</th><th>Date</th><th>Price</th><th>Risk</th><th>Certificate</th><th></th></tr></thead><tbody>${body}</tbody></table>`;
+}
+document.getElementById("year").innerHTML = [2026,2027,2028,2029,2030].map(year => `<option>${year}</option>`).join("");
+document.getElementById("year").onchange = event => { state.year = Number(event.target.value); draw(); };
+["decision","customers","chain","agents"].forEach(name => {
+  document.getElementById("nav-" + name).onclick = () => { state.page = name; draw(); };
+});
+draw();
+</script>
 </body>
 </html>
