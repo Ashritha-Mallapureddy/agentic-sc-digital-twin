@@ -87,9 +87,11 @@ HTML = r"""<!DOCTYPE html>
   .node b { display:block; }
   .ok { color:var(--green); } .wait { color:var(--amber); } .bad { color:var(--red); }
   button.go { background:var(--navy); color:white; border:0; padding:8px 10px; cursor:pointer; margin-top:8px; }
-  .asks { display:grid; gap:8px; margin:12px 0 14px; }
-  .asks button { text-align:left; background:white; border:1px solid var(--line); padding:10px 12px; cursor:pointer; }
-  .asks button.on { border-color:var(--navy); box-shadow:inset 3px 0 0 var(--navy); }
+  .askbar { display:flex; gap:8px; background:white; border:2px solid var(--navy); padding:8px; }
+  .askbar input { flex:1; border:0; font:inherit; font-size:16px; padding:8px; outline:none; }
+  .askbar button { background:var(--navy); color:white; border:0; padding:8px 18px; cursor:pointer; }
+  .tries { margin:8px 0 0; }
+  .tries button { background:transparent; border:0; color:var(--navy); cursor:pointer; text-decoration:underline; padding:0 10px 0 0; font:inherit; font-size:13px; }
   .answer { font-size:22px; font-weight:650; letter-spacing:-.02em; margin:6px 0 8px; }
   button.link { background:transparent; color:var(--navy); border:0; padding:0; cursor:pointer; text-decoration:underline; }
   .note { color:#5c6775; font-size:13px; }
@@ -116,7 +118,8 @@ const DATA = __DATA__;
 const state = {
   page: "decision",
   year: 2026,
-  question: 0,
+  query: "",
+  asked: false,
   line: DATA.lines[0].id,
   verified: new Set(DATA.lines.flatMap(line => line.slices.filter(item => item.initial === "verified").map(item => item.id)))
 };
@@ -171,6 +174,43 @@ function book(mode) {
   return DATA.lines.reduce((sum, line) => sum + costMode(line, mode), 0);
 }
 const findLine = id => DATA.lines.find(line => line.id === id);
+const esc = value => String(value).replace(/[&<>"']/g, mark => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[mark]));
+function reply(raw) {
+  const text = (raw || "").trim().toLowerCase();
+  const ranked = DATA.lines.map(line => ({ line, pos: position(line) })).sort((a, b) => b.pos.score - a.pos.score || b.line.tonnes - a.line.tonnes);
+  const top = ranked[0];
+  const skip = new Set(["the", "and", "for", "what", "why", "how", "who", "can", "not", "this", "week", "account", "customer", "confirm", "which", "does", "did", "are", "was", "with", "from", "that", "still", "open", "much", "come", "comes", "off"]);
+  const words = text.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !skip.has(word));
+  const hits = DATA.lines.filter(line => {
+    const hay = [line.id, line.customer, line.good, line.cn, line.origin, line.sector, ...line.slices.map(item => item.name)].join(" ").toLowerCase();
+    return words.some(word => hay.includes(word));
+  });
+  const line = (hits.sort((a, b) => position(b).score - position(a).score)[0]) || top.line;
+  const pos = position(line);
+  const act = actions().find(item => item.line.id === line.id);
+  const missing = line.slices.filter(item => !state.verified.has(item.id));
+  const safe = DATA.lines.filter(item => position(item).price === "Firm" && position(item).delivery === "Held");
+  if (!text) return { answer: "Type a question in the bar, then press Ask.", act: null };
+  if (/safe|already firm|already safe|who can we confirm|which account is safe/.test(text)) {
+    return { answer: safe.length ? safe.map(item => `${item.id} ${item.customer}: date held, price firm, certificate ${euro(cost(intensity(item), item))}.`).join(" ") : "None. Every account still has an open date or an open price.", act: null };
+  }
+  if (/why|missing|because|behind|reason/.test(text)) {
+    return { answer: missing.length ? `${line.customer} was promised: ${line.promise} Still missing: ${missing.map(item => item.name).join("; ")}. ${pos.complaint}` : `${line.customer} has no missing installation. The date is ${pos.delivery} and the price is ${pos.price}.`, act };
+  }
+  if (/how much|what do|what should|do we|action|mark-?up|euro|remove|owner|next step/.test(text)) {
+    return { answer: act ? `${act.verb}: ${act.name}. That removes ${euro(act.euros)} of mark-up on ${line.id}, ${line.customer}. Owner: the CX PMO analyst. The certificate on the verified figure is still paid.` : `Nothing to remove on ${line.customer}. The remaining certificate is the verified figure.`, act };
+  }
+  if (/certificate|cost|bill|how many euro|€/.test(text) && !/mark-?up/.test(text)) {
+    return { answer: hits.length ? `${line.id} ${line.customer}: certificate ${euro(cost(intensity(line), line))} on today's evidence. Country default would be ${euro(costMode(line, "default"))}.` : `The book is ${euro(book("today"))} on today's evidence. The mark-up still in it is ${euro(book("today") - book("full"))}.`, act: null };
+  }
+  if (/which|who|not confirm|do not confirm|don't confirm|refuse|priority|risk|promise/.test(text) || hits.length) {
+    if (hits.length && !/which customer|who do we|not confirm|do not confirm|don't confirm|refuse/.test(text)) {
+      return { answer: `${line.id} ${line.customer}. Date ${pos.delivery}. Price ${pos.price}. Risk ${pos.score}, ${pos.band}. ${pos.complaint}`, act };
+    }
+    return { answer: top.pos.score <= 2 ? "Confirm the book. Every customer promise has a held date and a firm price." : `Do not confirm ${top.line.customer} (${top.line.id}). The date is ${top.pos.delivery}. The price is ${top.pos.price}. Risk ${top.pos.score}, ${top.pos.band}.`, act: actions().find(item => item.line.id === top.line.id) };
+  }
+  return { answer: "Ask about this book. For example: which customer do we not confirm, why is the coil promise open, what do we do on L-02, how much comes off, or which account is safe.", act: null };
+}
 function draw() {
   document.querySelectorAll("nav button").forEach(button => button.classList.toggle("on", button.id === "nav-" + state.page));
   const openPrice = DATA.lines.filter(line => position(line).price === "Open").length;
@@ -179,41 +219,24 @@ function draw() {
   const full = book("full");
   const main = document.getElementById("main");
   if (state.page === "decision") {
-    const ranked = DATA.lines.map(line => ({ line, pos: position(line) })).sort((a, b) => b.pos.score - a.pos.score || b.line.tonnes - a.line.tonnes);
-    const top = ranked[0];
-    const act = actions().find(item => item.line.id === top.line.id);
-    const safe = DATA.lines.filter(line => position(line).price === "Firm" && position(line).delivery === "Held");
-    const missing = top.line.slices.filter(item => !state.verified.has(item.id));
-    const questions = [
+    const spoken = state.asked ? reply(state.query) : { answer: "The answer appears here after you press Ask.", act: null };
+    const examples = [
       "Which customer do we not confirm this week?",
       "Why is that promise still open?",
       "What do we do, and how much comes off?",
-      "Which account is already safe to confirm?"
-    ];
-    const answers = [
-      top.pos.score <= 2
-        ? "Confirm the book. Every customer promise on this page has a held date and a firm price."
-        : `Do not confirm ${top.line.customer} (${top.line.id}). The date is ${top.pos.delivery}. The price is ${top.pos.price}. Risk ${top.pos.score}, ${top.pos.band}.`,
-      missing.length
-        ? `${top.line.customer} was promised: ${top.line.promise}. Still missing: ${missing.map(item => item.name).join("; ")}. ${top.pos.complaint}`
-        : `${top.line.customer} has no missing installation.`,
-      act
-        ? `${act.verb}: ${act.name}. That removes ${euro(act.euros)} of mark-up on ${top.line.id}. Owner: the CX PMO analyst. The certificate on the verified figure is still paid.`
-        : "Nothing to remove. The remaining certificate is the verified figure.",
-      safe.length
-        ? safe.map(line => `${line.id} ${line.customer}: date held, price firm, certificate ${euro(cost(intensity(line), line))}.`).join(" ")
-        : "None. Every account still has an open date or an open price."
+      "Which account is already safe?"
     ];
     main.innerHTML = `
       <h2>Ask the desk</h2>
-      <p class="lead">These are the questions in the customer-experience review. Press one. The answer is read off this book, and it changes when you record an installation as verified.</p>
-      <div class="asks">
-        ${questions.map((text, index) => `<button data-q="${index}" class="${index === state.question ? "on" : ""}">${text}</button>`).join("")}
-      </div>
+      <form id="ask" class="askbar">
+        <input id="q" type="text" placeholder="Type a question, then press Ask" value="${esc(state.query)}" autocomplete="off"/>
+        <button type="submit">Ask</button>
+      </form>
+      <p class="tries note">Try ${examples.map(text => `<button type="button" data-try="${esc(text)}">${esc(text)}</button>`).join("")}</p>
       <div class="card high">
         <span class="note">Answer</span>
-        <p class="answer">${answers[state.question]}</p>
-        ${state.question !== 3 && act ? `<button class="go" id="do-top">Record ${act.name} as verified</button>` : ""}
+        <p class="answer">${esc(spoken.answer)}</p>
+        ${spoken.act ? `<button class="go" id="do-top">Record ${esc(spoken.act.name)} as verified</button>` : ""}
       </div>
       <div class="kpis">
         <div class="kpi"><span>Open price · order change</span><b>${openPrice} of ${DATA.lines.length}</b></div>
@@ -222,9 +245,21 @@ function draw() {
         <div class="kpi"><span>Certificate on today's evidence</span><b>${euro(today)}</b></div>
       </div>
       ${table()}`;
-    main.querySelectorAll(".asks button").forEach(button => button.onclick = () => { state.question = Number(button.dataset.q); draw(); });
+    document.getElementById("ask").onsubmit = event => {
+      event.preventDefault();
+      state.query = document.getElementById("q").value;
+      state.asked = true;
+      draw();
+    };
+    main.querySelectorAll("[data-try]").forEach(button => button.onclick = () => {
+      state.query = button.dataset.try;
+      state.asked = true;
+      draw();
+    });
     const go = document.getElementById("do-top");
-    if (go && act) go.onclick = () => { state.verified.add(act.id); draw(); };
+    if (go && spoken.act) go.onclick = () => { state.verified.add(spoken.act.id); draw(); };
+    const box = document.getElementById("q");
+    if (box) box.focus();
   } else if (state.page === "customers") {
     main.innerHTML = `<h2>Customer promises</h2><p class="lead">Each customs line is a promise. Held means the plant on the invoice is verified, so the date can stand. Firm means every installation behind it is verified, so the quoted price can stand.</p>${table()}`;
   } else if (state.page === "chain") {
