@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Agentic supply chain digital twin · Ashritha Mallapureddy</title>
+<style>
+  body { margin: 0; background: #f3f2f1; color: #252423; font-family: "Segoe UI", sans-serif; line-height: 1.5; }
+  header, main { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
+  h1 { margin: 0 0 8px; font-weight: 650; letter-spacing: -0.03em; }
+  .note, .decision, table { background: white; }
+  .note, .decision { padding: 14px 16px; margin: 12px 0; }
+  .decision { border-left: 4px solid #12239E; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 8px 10px; border-bottom: 1px solid #edebe9; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  th { color: #605e5c; font-weight: 600; }
+  a { color: #12239E; }
+  .meta { color: #605e5c; }
+</style>
+</head>
+<body>
+<header>
+  <p class="meta">SRH University · 2026 · Ashritha Mallapureddy</p>
+  <h1>Decision memo · agentic twin</h1>
+  <p class="note">RheinAdhesives network, synthetic. Sixteen weeks. Supplier resin, supplier packaging, Cologne plant, Duisburg DC, customers in DE, FR, NL, and PL. This memo is the orchestrator's output. It is not a forecast of a real company and it does not use employer data.</p>
+</header>
+<main>
+  <div class="decision">
+    <b>Recommendation</b>
+    <p>On the undisturbed network, low-carbon mode finishes at fill rate 98.8% and 1817 CO₂ units, against service mode at 100.0% and 3415. Rail share is 100% in low-carbon mode and 0% in service mode.</p>
+    <p>A four-week resin shortage is not a mode problem. Balanced mode ends at fill rate 82.2% with backlog 1391. Service mode, which may expedite, ends at 89.7% with backlog 808. Expediting moves finished goods that already exist. It does not create resin.</p>
+    <p>Keep the low-carbon lane while backlog is only the rail delay itself. When a resin constraint is open, switch the mode to service: the truck lane and the plant buffer recover units that already exist. Switch back once the constraint has passed. Do not leave the premium lane on as a habit.</p>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Scenario</th><th>Mode</th><th>Fill rate</th><th>Ending backlog</th><th>Cost</th><th>CO₂</th><th>Rail share</th><th>Expedite qty</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>baseline</td><td>service</td><td>100.0%</td><td>0</td><td>39034</td><td>3415</td><td>0%</td><td>147</td></tr>
+      <tr><td>baseline</td><td>balanced</td><td>98.9%</td><td>87</td><td>38678</td><td>3180</td><td>18%</td><td>0</td></tr>
+      <tr><td>baseline</td><td>low_carbon</td><td>98.8%</td><td>92</td><td>35787</td><td>1817</td><td>100%</td><td>0</td></tr>
+      <tr><td>resin_short</td><td>service</td><td>89.7%</td><td>808</td><td>34358</td><td>3081</td><td>0%</td><td>627</td></tr>
+      <tr><td>resin_short</td><td>balanced</td><td>82.2%</td><td>1391</td><td>32071</td><td>2619</td><td>21%</td><td>0</td></tr>
+      <tr><td>resin_short</td><td>low_carbon</td><td>81.1%</td><td>1482</td><td>29526</td><td>1497</td><td>100%</td><td>0</td></tr>
+      <tr><td>port_delay</td><td>service</td><td>94.0%</td><td>467</td><td>36802</td><td>3302</td><td>0%</td><td>867</td></tr>
+      <tr><td>port_delay</td><td>balanced</td><td>87.7%</td><td>959</td><td>33756</td><td>2829</td><td>16%</td><td>0</td></tr>
+      <tr><td>port_delay</td><td>low_carbon</td><td>85.9%</td><td>1102</td><td>31103</td><td>1578</td><td>100%</td><td>0</td></tr>
+      <tr><td>demand_spike</td><td>service</td><td>100.0%</td><td>0</td><td>41806</td><td>3677</td><td>0%</td><td>329</td></tr>
+      <tr><td>demand_spike</td><td>balanced</td><td>98.3%</td><td>140</td><td>40476</td><td>3324</td><td>17%</td><td>0</td></tr>
+      <tr><td>demand_spike</td><td>low_carbon</td><td>97.6%</td><td>199</td><td>37541</td><td>1906</td><td>100%</td><td>0</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>What each agent is allowed to do</b>
+    <ul>
+      <li>Inventory releases production, the Duisburg shuttle, and replenishment. Resin cover is lead time plus one week, capped by what the supplier will release.</li>
+      <li>Outbound stock is split in proportion to each region's backlog plus forecast.</li>
+      <li>Service mode sends that share by truck and may expedite up to 80 kits from the plant buffer.</li>
+      <li>Balanced mode uses rail only for a region whose backlog is already cleared. Low-carbon mode uses rail for every share.</li>
+      <li>Disruption changes resin capacity or resin lead time for the weeks of the scenario.</li>
+    </ul>
+    <p>CO₂ and cost units are model units, comparable inside this twin and not convertible to a published corporate footprint.</p>
+    <p>The same text is in <a href="output/decision_memo.md">output/decision_memo.md</a>. The weekly model is <a href="https://github.com/Ashritha-Mallapureddy/agentic-sc-digital-twin">in the repository</a>. Run <code>python -m streamlit run app.py</code> for the interactive view.</p>
+  </div>
+</main>
+</body>
+</html>
