@@ -4,6 +4,8 @@
 
 A customer-experience PMO puts one page in front of leadership: the promise to the customer, and the cost that can break it. In 2026 that cost includes CBAM certificates on steel, fertilisers, aluminium, cement and hydrogen.
 
+The review takes an open delivery before a larger price gap on a date that is already held. On that promise, the desk records the installation that removes the most mark-up. The certificate on a verified figure is still paid.
+
 Four agents read the same sample book.
 
 - The customs reader holds the import lines.
