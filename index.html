@@ -57,18 +57,34 @@
   .tries button { background: transparent; border: 0; border-bottom: 1px solid #cfc6b6; color: var(--muted); padding: 0; margin: 0 16px 6px 0; cursor: pointer; font-size: 13.5px; }
   .tries button:hover { color: var(--ink); border-color: var(--ink); }
   .decision { margin-top: 28px; padding-top: 8px; }
-  .decision h1 { font-family: "Newsreader", Georgia, serif; font-weight: 500; font-size: 44px; line-height: 1.08; letter-spacing: -.03em; margin: 8px 0 12px; max-width: 18em; }
-  .sentence, .sequence { max-width: 68ch; margin: 0 0 10px; font-size: 17px; }
-  .sequence { color: var(--rust); }
-  .facts { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 18px; margin: 18px 0 8px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .facts dt { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-  .facts dd { margin: 4px 0 0; font-size: 18px; }
-  .beats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 18px; }
-  .beats h3 { margin: 0 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: var(--muted); }
-  .beats p { margin: 0; }
+  .decision h1 { font-family: "Newsreader", Georgia, serif; font-weight: 500; font-size: 46px; line-height: 1.05; letter-spacing: -.03em; margin: 6px 0 8px; }
+  .one { margin: 0 0 4px; color: var(--muted); max-width: 62ch; }
+  .signals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 18px 0 8px; }
+  .sig { border-top: 2px solid var(--ink); padding-top: 8px; }
+  .sig span, .steps span.n { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .sig b, .pair b, .four b { display: block; font-family: "Newsreader", Georgia, serif; font-weight: 500; letter-spacing: -.03em; line-height: 1; }
+  .sig b { font-size: 34px; margin: 6px 0 4px; }
+  .sig em { font-style: normal; color: var(--muted); font-size: 13px; }
+  .sig.bad { border-top-color: var(--rust); }
+  .sig.ok { border-top-color: var(--pine); }
+  .sig.money b { color: var(--rust); }
+  .pair { display: grid; grid-template-columns: 1.15fr .85fr; gap: 22px; margin: 16px 0 4px; }
+  .pair article { border-top: 1px solid var(--line); padding-top: 10px; }
+  .pair .pick { border-top: 2px solid var(--rust); }
+  .pair b { font-size: 36px; margin: 6px 0; }
+  .pair .later, .pair .later b { color: var(--muted); }
+  .pair .later b { font-size: 28px; }
+  .pair p { margin: 0; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 12px; }
+  .steps div { border-top: 1px solid var(--ink); padding-top: 10px; }
+  .steps span.n { font-family: "Newsreader", Georgia, serif; font-size: 28px; letter-spacing: 0; text-transform: none; color: var(--ink); display: block; }
+  .steps b { display: block; margin: 6px 0 4px; font-weight: 500; }
+  .steps p { margin: 0; color: var(--muted); }
   .bridge { margin-top: 8px; }
-  .brow { display: grid; grid-template-columns: 260px 1fr 120px; gap: 14px; align-items: center; margin: 9px 0; }
-  .track { height: 8px; background: #e6dfd2; }
+  .brow { display: grid; grid-template-columns: 250px 1fr 120px; gap: 14px; align-items: center; margin: 11px 0; }
+  .track { height: 14px; background: #e6dfd2; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .chips span { border: 1px solid var(--line); padding: 5px 8px; font-size: 12px; letter-spacing: .03em; }
   .track i { display: block; height: 100%; background: var(--ink); }
   .brow.today .track i { background: var(--rust); }
   .brow.named .track i { background: var(--pine); }
@@ -77,11 +93,22 @@
   .legend { color: var(--muted); max-width: 78ch; }
   .swatch { display: inline-block; width: 18px; height: 4px; margin: 0 6px 2px 12px; vertical-align: middle; }
   .listhead { display: flex; justify-content: space-between; gap: 24px; align-items: end; }
-  .promise {
-    display: grid; grid-template-columns: 88px 1.5fr 132px 128px 92px; gap: 14px; align-items: center;
+  .promise, .prow {
+    display: grid; grid-template-columns: 58px 1.4fr 176px 120px 96px; gap: 12px; align-items: center;
     width: 100%; text-align: left; background: transparent; border: 0; border-top: 1px solid var(--line);
-    padding: 14px 8px; cursor: pointer;
+    padding: 12px 8px;
   }
+  .prow { cursor: default; color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; border-top: 0; padding-bottom: 4px; }
+  .promise { cursor: pointer; }
+  .pills { display: flex; gap: 10px; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  .pill i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-block; }
+  .pill.bad { color: var(--rust); }
+  .pill.bad i { background: var(--rust); }
+  .pill.ok { color: var(--pine); }
+  .pill.ok i { background: var(--pine); }
+  .pill.wait { color: var(--brass); }
+  .score { font-family: "Newsreader", Georgia, serif; font-size: 22px; font-weight: 500; }
   .promise:hover { background: rgba(28, 25, 21, .03); }
   .promise.on { box-shadow: inset 2px 0 0 var(--rust); }
   .promise strong { font-weight: 500; }
@@ -105,12 +132,13 @@
   .four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
   .four div { border-top: 1px solid var(--ink); padding-top: 10px; }
   .four h3 { margin: 0 0 6px; font-size: 16px; font-weight: 500; }
-  .four p { margin: 0; }
+  .four b { font-size: 28px; margin: 4px 0; }
+  .four p { margin: 0; color: var(--muted); }
   footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
   button.texty { background: transparent; border: 0; padding: 0; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--ink); }
   @media (max-width: 860px) {
     .decision h1 { font-size: 34px; }
-    .facts, .beats, .four, .flow { grid-template-columns: 1fr; }
+    .signals, .pair, .steps, .four, .flow { grid-template-columns: 1fr; }
     .brow { grid-template-columns: 1fr; gap: 4px; }
     .brow b { text-align: left; }
     .promise { grid-template-columns: 1fr 1fr; }
@@ -248,45 +276,46 @@ function viewLine(line, act, aside) {
   let kicker, sentence;
   if (pos.delivery === "Held" && pos.price === "Firm") {
     kicker = "Release";
-    sentence = line.promise + ". The date is held and the quoted price can stand. The certificate on the verified figure is " + euro(cost(intensity(line), line)) + ".";
+    sentence = line.id + " · " + tonnes(line.tonnes) + " t · date held · price firm";
   } else if (pos.delivery === "Open") {
     kicker = "Hold confirmation";
     const plant = tier1.every(item => item.initial === "unknown")
-      ? listNames(tier1) + (tier1.length > 1 ? " are" : " is") + " missing from the invoice, so no delivery date can be held."
-      : listNames(tier1) + (tier1.length > 1 ? " are" : " is") + " named on the invoice and not verified, so the delivery date cannot be held.";
-    const tail = behind.length ? " " + listNames(behind) + (behind.length > 1 ? " are" : " is") + " not on the invoice." : "";
-    sentence = line.promise + ". " + plant + tail;
+      ? listNames(tier1) + " · missing from the invoice"
+      : listNames(tier1) + " · on the invoice, no report";
+    const tail = behind.length ? " · " + listNames(behind) + " off the invoice" : "";
+    sentence = plant + tail;
   } else {
     kicker = "Hold the price";
-    sentence = line.promise + ". The plant on the invoice is verified, so the date can stand. The quoted price stays open until these are verified: " + missing.map(item => item.name).join("; ") + ".";
+    sentence = "Date held · " + missing.map(item => item.name).join(" · ");
   }
-  const now = cost(intensity(line), line);
-  const namedCost = costMode(line, "full");
+  const pair = aside ? {
+    nowEuro: act ? act.euros : 0,
+    nowWho: act ? act.name : line.customer,
+    nowWhy: pos.delivery === "Open" ? "Open date" : "Open price",
+    laterEuro: aside.euros,
+    laterWho: aside.name,
+    laterAccount: aside.line.customer,
+    laterWhy: position(aside.line).delivery === "Held" ? "Date held" : "Smaller open promise"
+  } : null;
   return {
-    kicker, title: line.customer, sentence, lineId: line.id, act,
-    sequence: aside ? "The largest gap is " + euro(aside.euros) + " on the " + aside.line.customer + ": " + aside.name + ". " + asideReason(line, aside) : "",
+    kicker, title: line.customer, sentence, lineId: line.id, act, pair, steps: null,
     facts: [
-      ["Record", act ? act.name : "Nothing open"],
-      ["Comes off", act ? euro(act.euros) : "—"],
-      ["Risk", pos.probability + " × " + pos.impact + " = " + pos.score],
-      ["Certificate now", euro(now)]
-    ],
-    beats: [
-      ["Promise", line.id + " · " + line.good + ", CN " + line.cn + ". " + line.origin + ". " + tonnes(line.tonnes) + " tonnes. " + line.customer + ": " + line.promise + "."],
-      ["Evidence", evidenceText(line)],
-      ["Consequence", "Risk " + pos.probability + " × " + pos.impact + " = " + pos.score + ", " + pos.band + ". " + pos.complaint + (act ? " " + act.verb + ": " + act.name + ". " + euro(act.euros) + " comes off the mark-up." : "") + " Today's certificate is " + euro(now) + ". Fully named, it is " + euro(namedCost) + ". That remainder is still paid."]
+      ["Date", pos.delivery, pos.delivery === "Open" ? "Liefertreue" : "Can stand", pos.delivery === "Open" ? "bad" : "ok"],
+      ["Price", pos.price, pos.price === "Open" ? "Auftragsänderung" : "Can stand", pos.price === "Open" ? "bad" : "ok"],
+      ["Risk", String(pos.score), pos.probability + " × " + pos.impact, pos.score >= 15 ? "bad" : pos.score >= 8 ? "" : "ok"],
+      ["Comes off", act ? euro(act.euros) : "—", act ? act.name : "Nothing open", "money"]
     ]
   };
 }
 function viewClear() {
   return {
-    kicker: "Release the book", title: "Every promise can stand", lineId: DATA.lines[0].id, act: null, sequence: "",
-    sentence: "Every date is held and every quoted price can stand. The certificate on the verified figures is " + euro(book("full")) + ". Nothing left is a mark-up for a missing installation.",
-    facts: [["Record", "Nothing open"], ["Comes off", "—"], ["Open promises", "0"], ["Certificate", euro(book("full"))]],
-    beats: [
-      ["Promise", "Seven accounts, each with a held date and a firm price."],
-      ["Evidence", "Every installation in the book has a verifier report, including the sites that were not on the invoice."],
-      ["Consequence", "The remaining certificate is the verified embedded emissions."]
+    kicker: "Release the book", title: "Every promise can stand", lineId: DATA.lines[0].id, act: null, pair: null, steps: null,
+    sentence: "Date held and price firm on every line.",
+    facts: [
+      ["Date", "Held", "Every line", "ok"],
+      ["Price", "Firm", "Every line", "ok"],
+      ["Open", "0", "Nothing left", "ok"],
+      ["Certificate", euro(book("full")), "Verified figure", "money"]
     ]
   };
 }
@@ -297,45 +326,36 @@ function viewSafe() {
     const base = viewLine(weekly.choice, weekly.act, weekly.aside);
     base.kicker = "None firm yet";
     base.title = "No account can be released";
-    base.sentence = "Every promise still has an open date or an open price. The review takes the open delivery with the most tonnes, then the installation on it that removes the most mark-up.";
+    base.sentence = "Open date with the most tonnes, then the installation that removes the most mark-up.";
     return base;
   }
   return {
     kicker: "Already firm", title: safe.length > 2 ? "Accounts that can stand" : safe.map(line => line.customer).join(" · "),
-    lineId: safe[0].id, act: null, sequence: "",
-    sentence: safe.map(line => line.id + " " + line.customer + ": date held, price firm, certificate " + euro(cost(intensity(line), line)) + ".").join(" "),
-    facts: [["Firm", String(safe.length)], ["Open dates", String(DATA.lines.filter(line => position(line).delivery === "Open").length)], ["Open prices", String(DATA.lines.filter(line => position(line).price === "Open").length)], ["Certificate today", euro(book("today"))]],
-    beats: [
-      ["Promise", "A firm account is one whose invoice plant and every installation behind it are verified."],
-      ["Evidence", safe.map(line => line.id + " " + line.customer).join("; ") + "."],
-      ["Consequence", "These quoted prices can stand. The certificate on the verified figure is still paid."]
+    lineId: safe[0].id, act: null, pair: null, steps: null,
+    sentence: safe.map(line => line.id).join(" · "),
+    facts: [
+      ["Firm", String(safe.length), "Date and price", "ok"],
+      ["Open dates", String(DATA.lines.filter(line => position(line).delivery === "Open").length), "Liefertreue", ""],
+      ["Open prices", String(DATA.lines.filter(line => position(line).price === "Open").length), "Auftragsänderung", ""],
+      ["Book today", euro(book("today")), "Verified figure still paid", "money"]
     ]
   };
 }
 function viewGuide() {
   const weekly = workshop();
-  const choice = weekly.choice;
-  const act = weekly.act;
-  const now = weekly.clear
-    ? "Every promise can stand. The heading will say so."
-    : "The heading already names " + choice.customer + ". " + (act ? "Record " + act.name + " and " + euro(act.euros) + " comes off the mark-up." : "");
   return {
-    kicker: "How to use this page",
-    title: "A weekly customer review",
-    lineId: choice ? choice.id : DATA.lines[0].id,
-    act,
-    sequence: "",
-    sentence: "This page is the Monday review for one sample importer, Linea Automotive GmbH in Düsseldorf. It says which customer promise to hold, because a plant or a mine behind the invoice is still unverified, and how many euros come off once that installation is verified. The certificate on a verified figure is still paid. " + now,
-    facts: [
-      ["Read first", "The large heading"],
-      ["Then", "Ask, or press Record"],
-      ["The three marks", "Default, today, named"],
-      ["Still movable", euro(book("today") - book("full"))]
-    ],
-    beats: [
-      ["What this is", "Seven import lines for " + state.year + ": steel, fertiliser, aluminium, cement and hydrogen. Each line is a promise to a customer. An open date is a delivery risk, Liefertreue. An open price is an order change or a surcharge, Auftragsänderung and Reklamation. The red sentence, when it appears, is the larger euro the review is leaving until later, and the reason."],
-      ["How to use it", "Read the heading. That is the decision, before you ask anything. Type a question and press Ask. Click a row to open the chain behind that invoice. A dashed edge is an installation the importer does not contract. Press Record when that installation is verified. The heading moves to the next promise. The year changes the rule. The certificate price stays at €" + DATA.price.toFixed(2) + "."],
-      ["Questions it answers", "What is this, and how do I use it. Which customer do we hold. Why is the coil promise still open. What comes off on L-02. Which account is already firm. What do the three marks mean."]
+    kicker: "How to read this",
+    title: "Four moves",
+    lineId: weekly.choice ? weekly.choice.id : DATA.lines[0].id,
+    act: weekly.act,
+    pair: null,
+    sentence: "",
+    facts: null,
+    steps: [
+      ["1", "Read the heading", "That is the decision."],
+      ["2", "Open date first", "A larger euro waits if the date is held."],
+      ["3", "Click a row", "A dashed edge is off the invoice."],
+      ["4", "Press Record", "The next promise becomes the heading."]
     ]
   };
 }
@@ -343,9 +363,9 @@ function viewOutside() {
   const weekly = workshop();
   const base = weekly.clear ? viewClear() : viewLine(weekly.choice, weekly.act, weekly.aside);
   base.kicker = "Ask it this way";
-  base.title = "This page answers the review in front of you";
-  base.sentence = "It decides which customer promise to hold, and how many euros come off when a missing installation is verified. Ask what this is, how to use it, which promise to hold, why a promise is open, or what comes off on a line such as L-02.";
-  base.sequence = "";
+  base.title = "The review in front of you";
+  base.sentence = "Which promise to hold · why it is open · what comes off.";
+  base.pair = null;
   return base;
 }
 function wantsGuide(text) {
@@ -404,7 +424,8 @@ function draw() {
   const rows = DATA.lines.map(line => {
     const pos = position(line);
     const on = line.id === chainLine.id ? " on" : "";
-    return `<button type="button" class="promise${on}" data-line="${line.id}"><span class="pid">${line.id}<span class="tag">${esc(line.good)}</span></span><span><strong>${esc(line.customer)}</strong><span class="tag">${esc(line.promise)}</span></span><span>${pos.delivery} date<span class="tag">${pos.price} price · ${pos.probability} × ${pos.impact} = ${pos.score}</span></span>${meter(line)}<span class="fig">${euro(cost(intensity(line), line))}</span></button>`;
+    const pill = (open, word) => `<span class="pill ${open ? "bad" : "ok"}"><i></i>${word}</span>`;
+    return `<button type="button" class="promise${on}" data-line="${line.id}"><span class="pid">${line.id}<span class="tag">${esc(line.good)}</span></span><span><strong>${esc(line.customer)}</strong><span class="tag">${tonnes(line.tonnes)} t · ${esc(line.origin)}</span></span><span class="pills">${pill(pos.delivery === "Open", "Date")}${pill(pos.price === "Open", "Price")}<span class="score">${pos.score}</span></span>${meter(line)}<span class="fig">${euro(cost(intensity(line), line))}</span></button>`;
   }).join("");
   const tiers = [1, 2, 3].map(tier => {
     const title = tier === 1 ? "Tier 1 · on the invoice" : tier === 2 ? "Tier 2 · precursors" : "Tier 3 · extraction, often off the invoice";
@@ -412,11 +433,12 @@ function draw() {
     const cards = group.length ? group.map(item => {
       const known = state.verified.has(item.id);
       const klass = known ? "verified" : item.initial === "unknown" ? "unknown" : "named";
-      const label = known ? "Verifier report on file" : item.initial === "unknown" ? "Not on the invoice" : "Named, no verifier report";
+      const label = known ? "On file" : item.initial === "unknown" ? "Off invoice" : "No report";
+      const pill = known ? "ok" : item.initial === "unknown" ? "bad" : "wait";
       const euros = saving(chainLine, item);
-      const money = euros > 1 ? `<p class="quiet">${euro(euros)} comes off if this is recorded</p>` : "";
-      const button = known ? "" : `<button type="button" class="record" data-id="${item.id}">Record as verified</button>`;
-      return `<div class="node ${klass}"><p class="kicker">${esc(item.role)}</p><p class="name">${esc(item.name)}</p><p class="quiet">${esc(item.place)}</p><p>${sliceValue(item, chainLine).toFixed(3)} tCO2e/t</p><p>${label}</p>${money}${button}</div>`;
+      const money = euros > 1 ? `<p class="fig">${euro(euros)}</p>` : `<p class="quiet">On the verified figure</p>`;
+      const button = known ? "" : `<button type="button" class="record" data-id="${item.id}">Record</button>`;
+      return `<div class="node ${klass}"><p class="kicker">${esc(item.role)}</p><p class="name">${esc(item.name)}</p><p class="pill ${pill}"><i></i>${label}</p>${money}${button}</div>`;
     }).join("") : `<div class="node"><p class="quiet">No installation of this tier on the line.</p></div>`;
     return `<div class="tier"><h3>${title}</h3>${cards}</div>`;
   }).join("");
@@ -426,11 +448,17 @@ function draw() {
   const unnamed = DATA.lines.flatMap(line => line.slices).filter(item => item.initial === "unknown" && !state.verified.has(item.id)).length;
   const totalTonnes = DATA.lines.reduce((sum, line) => sum + line.tonnes, 0);
   const weekly = workshop();
-  const deskLine = weekly.clear || !weekly.act ? "No mark-up left to remove." : "First record: " + weekly.act.name + ", " + euro(weekly.act.euros) + ", on " + weekly.choice.customer + ".";
-  const facts = spoken.facts.map(([dt, dd]) => `<div><dt>${esc(dt)}</dt><dd>${esc(dd)}</dd></div>`).join("");
-  const beats = spoken.beats.map(([title, text]) => `<div><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`).join("");
-  const sequence = spoken.sequence ? `<p class="sequence">${esc(spoken.sequence)}</p>` : "";
-  const record = spoken.act ? `<button type="button" class="record" id="do-top">Record ${esc(spoken.act.name)} as verified</button>` : "";
+  const deskEuro = weekly.clear || !weekly.act ? "—" : euro(weekly.act.euros);
+  const deskWho = weekly.clear || !weekly.act ? "Nothing open" : weekly.act.name;
+  const signals = spoken.facts ? spoken.facts.map(([label, value, sub, klass]) => `<div class="sig ${klass || ""}"><span>${esc(label)}</span><b>${esc(value)}</b><em>${esc(sub)}</em></div>`).join("") : "";
+  const pair = spoken.pair ? `<div class="pair"><article class="pick"><p class="kicker">This week · ${esc(spoken.pair.nowWhy)}</p><b>${euro(spoken.pair.nowEuro)}</b><p>${esc(spoken.pair.nowWho)}</p></article><article class="later"><p class="kicker">Later · ${esc(spoken.pair.laterWhy)}</p><b>${euro(spoken.pair.laterEuro)}</b><p>${esc(spoken.pair.laterAccount)}</p><p>${esc(spoken.pair.laterWho)}</p></article></div>` : "";
+  const steps = spoken.steps ? `<div class="steps">${spoken.steps.map(([n, title, text]) => `<div><span class="n">${esc(n)}</span><b>${esc(title)}</b><p>${esc(text)}</p></div>`).join("")}</div>` : "";
+  const one = spoken.sentence ? `<p class="one">${esc(spoken.sentence)}</p>` : "";
+  const record = spoken.act && !spoken.steps ? `<button type="button" class="record" id="do-top">Record ${esc(spoken.act.name)}</button>` : "";
+  const steel = Math.round(DATA.markup[state.year] * 100);
+  const fert = Math.round(DATA.fert * 100);
+  const factorPct = (DATA.factor[state.year] * 100).toLocaleString("en-IE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const chips = ["Year " + state.year, "Price €" + DATA.price.toFixed(2), "Mark-up " + steel + "%", "Fertiliser " + fert + "%", "Factor " + factorPct + "%", "Movable " + euro(today - full)].map(item => `<span>${item}</span>`).join("");
   const inspectNote = state.inspect && state.inspect !== spoken.lineId ? `<p class="quiet">Opened from the list. The judgment above stays on ${esc(findLine(spoken.lineId).customer)}.</p>` : "";
   document.getElementById("main").innerHTML = `
     <section class="ask">
@@ -444,46 +472,44 @@ function draw() {
     <section class="decision">
       <p class="kicker">${esc(spoken.kicker)}</p>
       <h1>${esc(spoken.title)}</h1>
-      <p class="sentence">${esc(spoken.sentence)}</p>
-      ${sequence}
-      <dl class="facts">${facts}</dl>
+      ${one}
+      ${steps}
+      ${signals ? `<div class="signals">${signals}</div>` : ""}
+      ${pair}
       ${record}
-      <div class="beats">${beats}</div>
     </section>
     <section>
-      <h2>What the workshop can still move</h2>
-      <p class="legend">The gap between today's evidence and a fully named book is the mark-up. The named figure remains payable.</p>
+      <h2>The book</h2>
       <div class="bridge">${bars}</div>
-      <p class="rule">${esc(ruleText())} Mark-up still in the book: ${euro(today - full)}.</p>
+      <div class="chips">${chips}</div>
     </section>
     <section>
       <div class="listhead">
         <h2>Seven promises</h2>
-        <p class="legend"><i class="swatch" style="background:#1c1915"></i>country default <i class="swatch" style="background:#8c3a2b"></i>today <i class="swatch" style="background:#1d5c44"></i>if named</p>
+        <p class="legend"><i class="swatch" style="background:#1c1915"></i>default <i class="swatch" style="background:#8c3a2b"></i>today <i class="swatch" style="background:#1d5c44"></i>named</p>
       </div>
-      <p class="legend">Date open is a delivery risk, Liefertreue. Price open is an order change or a surcharge complaint, Auftragsänderung and Reklamation. Risk is probability × impact. Where the first two marks are the same length, the line is still entirely on the country default.</p>
+      <div class="prow"><span>Line</span><span>Account</span><span>Date · price · risk</span><span>Marks</span><span>Certificate</span></div>
       <div>${rows}</div>
     </section>
     <section id="chain">
-      <h2>Behind the invoice · ${esc(chainLine.id)} ${esc(chainLine.good)}</h2>
-      <p class="legend">${esc(chainLine.customer)}. ${esc(chainLine.origin)}. The invoice names tier 1. The certificate also depends on the coke, the coal, the ore or the gas behind that plant.</p>
+      <p class="kicker">${esc(chainLine.customer)} · ${esc(chainLine.origin)} · ${tonnes(chainLine.tonnes)} t</p>
+      <h2>${esc(chainLine.id)} · ${esc(chainLine.good)}</h2>
       ${inspectNote}
       <div class="flow">${tiers}</div>
       <p class="formula">${esc(formula)}</p>
-      <p class="quiet">${esc(chainLine.default_note)} ${esc(chainLine.benchmark_note || "")}</p>
     </section>
     <section>
-      <h2>How the review is split</h2>
+      <h2>The split</h2>
       <div class="four">
-        <div><h3>Customs reader</h3><p>${DATA.lines.length} lines, ${tonnes(totalTonnes)} tonnes. Above the 50-tonne threshold, so an authorised declarant files the book.</p></div>
-        <div><h3>Chain scout</h3><p>${unnamed} installations are still unnamed behind the invoice, including coal, ore, gas and the mine the importer does not contract.</p></div>
-        <div><h3>Emissions clerk</h3><p>Today's book is ${euro(today)}. ${euro(today - full)} of that exists because a slice still uses the marked country default.</p></div>
-        <div><h3>Certificate desk</h3><p>${esc(deskLine)} The certificate on a verified figure is still paid.</p></div>
+        <div><h3>Customs</h3><b>${DATA.lines.length}</b><p>${tonnes(totalTonnes)} t · above 50 t</p></div>
+        <div><h3>Chain</h3><b>${unnamed}</b><p>sites off the invoice</p></div>
+        <div><h3>Book today</h3><b>${euro(today)}</b><p>movable ${euro(today - full)}</p></div>
+        <div><h3>First record</h3><b>${deskEuro}</b><p>${esc(deskWho)}</p></div>
       </div>
     </section>
     <footer>
-      <p>Installation names and their actual figures are synthetic. Country defaults, the mark-up schedule, the CBAM factor and the Q3 2026 certificate price of €82.32 follow the published method. A filing uses the Commission Excel. Carbon price already paid is zero in this book. Owner of the open item: the CX PMO analyst.</p>
-      ${dirty() ? `<p><button type="button" class="texty" id="reset">Return to the evidence the book started with</button></p>` : ""}
+      <p>Sample installations. The method is the published one: country default, the year's mark-up, then the CBAM factor times the benchmark. Certificate price €82.32. A filing uses the Commission Excel. Owner: the CX PMO analyst.</p>
+      ${dirty() ? `<p><button type="button" class="texty" id="reset">Return to the opening evidence</button></p>` : ""}
     </footer>`;
   document.getElementById("ask").onsubmit = event => {
     event.preventDefault();
