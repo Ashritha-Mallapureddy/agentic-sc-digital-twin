@@ -108,7 +108,7 @@ HTML = r"""<!DOCTYPE html>
   .tries button { background: transparent; border: 0; border-bottom: 1px solid #cfc6b6; color: var(--muted); padding: 0; margin: 0 16px 6px 0; cursor: pointer; font-size: 13.5px; }
   .tries button:hover { color: var(--ink); border-color: var(--ink); }
   .decision { margin-top: 28px; padding-top: 8px; }
-  .decision h1 { font-family: "Newsreader", Georgia, serif; font-weight: 500; font-size: 44px; line-height: 1.08; letter-spacing: -.03em; margin: 8px 0 12px; max-width: 22ch; }
+  .decision h1 { font-family: "Newsreader", Georgia, serif; font-weight: 500; font-size: 44px; line-height: 1.08; letter-spacing: -.03em; margin: 8px 0 12px; max-width: 18em; }
   .sentence, .sequence { max-width: 68ch; margin: 0 0 10px; font-size: 17px; }
   .sequence { color: var(--rust); }
   .facts { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 18px; margin: 18px 0 8px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -266,7 +266,7 @@ function matchLine(text) {
   const words = text.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !skip.has(word));
   const hits = DATA.lines.filter(line => {
     const hay = [line.id, line.customer, line.good, line.cn, line.origin, line.sector, ...line.slices.map(item => item.name)].join(" ").toLowerCase();
-    return words.some(word => hay.includes(word));
+    return words.some(word => new RegExp("\\b" + word + "\\b").test(hay));
   });
   hits.sort((a, b) => position(b).score - position(a).score || b.tonnes - a.tonnes);
   return hits[0] || null;
@@ -363,23 +363,54 @@ function viewSafe() {
     ]
   };
 }
+function viewGuide() {
+  const weekly = workshop();
+  const choice = weekly.choice;
+  const act = weekly.act;
+  const now = weekly.clear
+    ? "Every promise can stand. The heading will say so."
+    : "The heading already names " + choice.customer + ". " + (act ? "Record " + act.name + " and " + euro(act.euros) + " comes off the mark-up." : "");
+  return {
+    kicker: "How to use this page",
+    title: "A weekly customer review",
+    lineId: choice ? choice.id : DATA.lines[0].id,
+    act,
+    sequence: "",
+    sentence: "This page is the Monday review for one sample importer, Linea Automotive GmbH in Düsseldorf. It says which customer promise to hold, because a plant or a mine behind the invoice is still unverified, and how many euros come off once that installation is verified. The certificate on a verified figure is still paid. " + now,
+    facts: [
+      ["Read first", "The large heading"],
+      ["Then", "Ask, or press Record"],
+      ["The three marks", "Default, today, named"],
+      ["Still movable", euro(book("today") - book("full"))]
+    ],
+    beats: [
+      ["What this is", "Seven import lines for " + state.year + ": steel, fertiliser, aluminium, cement and hydrogen. Each line is a promise to a customer. An open date is a delivery risk, Liefertreue. An open price is an order change or a surcharge, Auftragsänderung and Reklamation. The red sentence, when it appears, is the larger euro the review is leaving until later, and the reason."],
+      ["How to use it", "Read the heading. That is the decision, before you ask anything. Type a question and press Ask. Click a row to open the chain behind that invoice. A dashed edge is an installation the importer does not contract. Press Record when that installation is verified. The heading moves to the next promise. The year changes the rule. The certificate price stays at €" + DATA.price.toFixed(2) + "."],
+      ["Questions it answers", "What is this, and how do I use it. Which customer do we hold. Why is the coil promise still open. What comes off on L-02. Which account is already firm. What do the three marks mean."]
+    ]
+  };
+}
 function viewOutside() {
   const weekly = workshop();
   const base = weekly.clear ? viewClear() : viewLine(weekly.choice, weekly.act, weekly.aside);
-  base.kicker = "This book only";
-  base.title = "Ask about a promise in the seven lines";
-  base.sentence = "Which customer do we hold, why is the coil promise open, what comes off on L-02, or which account is already firm.";
+  base.kicker = "Ask it this way";
+  base.title = "This page answers the review in front of you";
+  base.sentence = "It decides which customer promise to hold, and how many euros come off when a missing installation is verified. Ask what this is, how to use it, which promise to hold, why a promise is open, or what comes off on a line such as L-02.";
   base.sequence = "";
   return base;
+}
+function wantsGuide(text) {
+  return /what is this|what'?s this|what am i looking|what does this|what is (the )?(page|desk|app|tool)|about this page|who is this for|how (can|do|to) (i |we |you )?(use|read|start)|how does (this|it|the page|the desk) work|how can i use|how do i use|explain this|explain the (page|desk)|^(help|explain)\b|what do the (bars|marks|colou?rs|three)|what (does|is) record|what happens (if|when) i (press |click )?record/.test(text);
 }
 function compose(raw) {
   const text = (raw || "").trim().toLowerCase();
   const weekly = workshop();
   if (!text) return weekly.clear ? viewClear() : viewLine(weekly.choice, weekly.act, weekly.aside);
-  if (/safe|already firm|already safe|which account is safe|who can we confirm/.test(text)) return viewSafe();
-  if (weekly.clear) return viewClear();
   const specific = matchLine(text);
-  if (!specific && !/why|missing|because|how much|what do|what should|do we|action|mark-?up|euro|which|who|confirm|risk|promise|certificate|cost|open|largest|biggest|hold/.test(text)) return viewOutside();
+  if (wantsGuide(text) && !specific) return viewGuide();
+  if (/safe|already firm|already safe|which account is safe|who can we confirm|already firm/.test(text)) return viewSafe();
+  if (weekly.clear) return viewClear();
+  if (!specific && !/why|missing|because|how much|what do|what should|do we|action|mark-?up|euro|which|who|confirm|risk|promise|certificate|cost|open|largest|biggest|hold|mean|marks|bars/.test(text)) return viewOutside();
   const line = specific || weekly.choice;
   const act = actions().find(item => item.line.id === line.id) || null;
   const aside = !specific && weekly.aside && (!act || weekly.aside.id !== act.id) ? weekly.aside : null;
@@ -411,10 +442,10 @@ function draw() {
   const base = book("default");
   const scale = base || 1;
   const examples = [
+    "What is this about?",
+    "How can I use this?",
     "Which customer do we hold this week?",
-    "Why is that promise still open?",
-    "What do we do, and how much comes off?",
-    "Which account is already firm?"
+    "Why is the coil promise still open?"
   ];
   const bars = [
     ["Country-default path", base, ""],
@@ -456,7 +487,7 @@ function draw() {
     <section class="ask">
       <p class="kicker">Ask the review</p>
       <form id="ask" class="askbar">
-        <input id="q" type="text" placeholder="Ask about a promise, a missing installation, or the euro" value="${esc(state.query)}" autocomplete="off"/>
+        <input id="q" type="text" placeholder="What is this? How do I use it? Or ask about a promise" value="${esc(state.query)}" autocomplete="off"/>
         <button type="submit">Ask</button>
       </form>
       <p class="tries">${examples.map(text => `<button type="button" data-try="${esc(text)}">${esc(text)}</button>`).join("")}</p>
